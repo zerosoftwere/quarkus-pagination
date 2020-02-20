@@ -10,6 +10,7 @@ import net.xerosoft.service.AuthorService;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.util.Optional;
 
 @Path("/authors")
 public class AuthorResource {
@@ -18,8 +19,11 @@ public class AuthorResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Paginated<Author> getAll(@BeanParam PageRequest pageRequest) {
-        return authorService.getAll(Page.of(pageRequest.getIndex(), pageRequest.getSize()));
+    public Paginated<Author> getAll(@BeanParam PageRequest pageRequest, @QueryParam("name") Optional<String> name) {
+        if (name.isPresent())
+            return authorService.findByNames(name.get(), Page.of(pageRequest.getIndex(), pageRequest.getSize()));
+        else
+            return authorService.getAll(Page.of(pageRequest.getIndex(), pageRequest.getSize()));
     }
 
     @GET

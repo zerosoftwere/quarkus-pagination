@@ -5,8 +5,6 @@ import net.xerosoft.common.Paginated;
 import net.xerosoft.model.Author;
 import net.xerosoft.model.Quote;
 
-import java.util.List;
-
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
@@ -25,5 +23,9 @@ public class AuthorService {
 
     public Paginated<Quote> getQuotesByAuthor(long id, Page page) {
         return quoteService.findByAuthor(id, page);
+    }
+
+    public Paginated<Author> findByNames(String name, Page page) {
+        return Author.findByName(name, page);
     }
 }

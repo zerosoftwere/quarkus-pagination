@@ -13,6 +13,7 @@ import java.util.List;
 
 @Entity(name = "authors")
 public class Author extends PanacheEntity {
+
     public String name;
 
     @CreationTimestamp
@@ -23,6 +24,15 @@ public class Author extends PanacheEntity {
 
     public static Paginated<Author> find(Page page) {
         PanacheQuery<Author> query = Author.findAll().page(page);
+        int pages = query.pageCount();
+        long total = query.count();
+        List<Author> content = query.list();
+        int count = content.size();
+        return Paginated.of(page.index, pages, count, total, content);
+    }
+
+    public static Paginated<Author> findByName(String name, Page page) {
+        PanacheQuery<Author> query = Author.find("LOWER(name) LIKE CONCAT('%', LOWER(?1), '%')", name).page(page);
         int pages = query.pageCount();
         long total = query.count();
         List<Author> content = query.list();
