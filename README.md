@@ -1,4 +1,4 @@
-# pagination project
+# Quarkus Quote Application (A demo quarkus project)
 
 This project uses Quarkus, the Supersonic Subatomic Java Framework.
 
