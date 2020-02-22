@@ -35,8 +35,17 @@ public class Quote extends PanacheEntity {
         return Paginated.of(page.index, pages, count, total, content);
     }
 
-    public static Paginated<Quote> findByAuthor(long AuthorId, Page page) {
-        PanacheQuery<Quote> query = Quote.find("author_id=?1", AuthorId).page(page);
+    public static Paginated<Quote> findByAuthor(long authorId, Page page) {
+        PanacheQuery<Quote> query = Quote.find("author.id=?1", authorId).page(page);
+        int pages = query.pageCount();
+        long total = query.count();
+        List<Quote> content = query.list();
+        int count = content.size();
+        return Paginated.of(page.index, pages, count, total, content);
+    }
+
+    public static Paginated<Quote> findByAuthors(List<String> authors, Page page) {
+        PanacheQuery<Quote> query = Quote.find("author.name IN ?1", authors).page(page);
         int pages = query.pageCount();
         long total = query.count();
         List<Quote> content = query.list();
